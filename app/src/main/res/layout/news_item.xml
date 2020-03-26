@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="news"
+                  type="com.leeyunbo.myrealtrip.dataclass.News"/>
+    </data>
+
+
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+
         <ImageView
                 android:layout_width="80dp"
                 android:layout_height="100dp"
@@ -14,7 +23,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
         <TextView
-                android:text="갤럭시S 신제품은 '갤럭시S20'...실물 사진 유출..."
+                android:text="@{news.title}"
                 android:textSize="15dp"
                 android:textStyle="bold"
                 android:layout_width="330dp"
@@ -24,7 +33,7 @@
                 app:layout_constraintTop_toTopOf="@+id/item_img"
                 app:layout_constraintStart_toEndOf="@+id/item_img"/>
         <TextView
-                android:text="삼성전자가 다음 달 공개할 예정인 차기 갤럭시 S시리즈 중 한 모델로 추정되는 사진(사진)이 유출됐다..."
+                android:text="@{news.content}"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_content_tv"
@@ -32,14 +41,14 @@
                 app:layout_constraintLeft_toLeftOf="@+id/item_title_tv"
                 app:layout_constraintTop_toBottomOf="@+id/item_title_tv"/>
         <TextView
-                android:text="갤럭시S20"
+                android:text="@{news.keyword[0]"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_keyword_tv1"
                 app:layout_constraintStart_toStartOf="@id/item_title_tv"
                 app:layout_constraintBottom_toBottomOf="@id/item_img"/>
         <TextView
-                android:text="모델로"
+                android:text="@{news.keyword[1]}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_keyword_tv2"
@@ -47,7 +56,7 @@
                 app:layout_constraintLeft_toRightOf="@id/item_keyword_tv1"
                 app:layout_constraintBottom_toBottomOf="@id/item_keyword_tv1"/>
         <TextView
-                android:text="카메라"
+                android:text="@{news.keyword[2]}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/item_keyword_tv3"

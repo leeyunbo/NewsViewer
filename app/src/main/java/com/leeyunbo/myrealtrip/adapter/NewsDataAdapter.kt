@@ -13,17 +13,13 @@ import kotlinx.android.synthetic.main.news_item.view.*
  * News RecyclerView를 위한 어댑터 구현
  */
 class NewsDataAdapter(val context : Context) : RecyclerView.Adapter<ViewHolder>() {
-    val items : List<News> = emptyList()
+    var items : List<News> = emptyList()
     override fun getItemCount(): Int {
         return items.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.itemTitleTv.text = items[position].title
-        holder.itemContentTv.text = items[position].content
-        //holder.itemKeyword01.text = items[position].keyword[0]
-        //holder.itemKeyword02.text = items[position].keyword[1]
-        //holder.itemKeyword03.text = items[position].keyword[2]
+        holder
 
     }
 
@@ -33,6 +29,11 @@ class NewsDataAdapter(val context : Context) : RecyclerView.Adapter<ViewHolder>(
             parent,
             false
         ))
+    }
+
+    fun setItem(items : List<News>) {
+        this.items = items
+        notifyDataSetChanged()
     }
 
 

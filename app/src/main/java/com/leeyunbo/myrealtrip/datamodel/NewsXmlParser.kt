@@ -45,7 +45,7 @@ class NewsXmlParser {
         parser.require(XmlPullParser.START_TAG, null, "item")
         lateinit var title : String
         lateinit var content : String
-        lateinit var keyword : String
+        lateinit var keyword : ArrayList<String>
         lateinit var image : String
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
@@ -98,8 +98,8 @@ class NewsXmlParser {
         return content
     }
 
-    private fun readKeyword(link : String) : String {
-        var keyword = ""
+    private fun readKeyword(link : String) : ArrayList<String> {
+        var keyword = ArrayList<String>()
         return keyword
 
     }
