@@ -1,5 +1,5 @@
 package com.leeyunbo.myrealtrip.datamodel
 
-class MetaDataParser {
+object MetaDataParser {
 
 }

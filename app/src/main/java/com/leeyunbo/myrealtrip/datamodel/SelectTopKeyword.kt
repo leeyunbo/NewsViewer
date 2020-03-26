@@ -1,5 +1,10 @@
 package com.leeyunbo.myrealtrip.datamodel
 
-class SelectTopKeyword(val Keywords : String) {
+object SelectTopKeyword {
+    fun getTopKeywords(keywords : String) : ArrayList<String> {
+        val topKeywords = ArrayList<String>()
 
+
+        return topKeywords
+    }
 }

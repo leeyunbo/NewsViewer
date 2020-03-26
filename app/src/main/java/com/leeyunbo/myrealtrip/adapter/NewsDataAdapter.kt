@@ -31,11 +31,6 @@ class NewsDataAdapter(val context : Context) : RecyclerView.Adapter<ViewHolder>(
         ))
     }
 
-    fun setItem(items : List<News>) {
-        this.items = items
-        notifyDataSetChanged()
-    }
-
 
 }
 

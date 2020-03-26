@@ -12,7 +12,7 @@ import java.lang.IllegalStateException
  * keyword : item > link, <meta property="og:description"
  */
 
-class NewsXmlParser {
+object NewsXmlParser {
     fun parse(inputStream: InputStream) : ArrayList<News> {
         inputStream.use {
             val parser : XmlPullParser = Xml.newPullParser()

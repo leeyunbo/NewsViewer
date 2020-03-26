@@ -26,12 +26,22 @@ class MainActivity : AppCompatActivity() {
             MainViewModel()
         }
         var binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,R.layout.activity_main)
+        binding.setVm(viewModel)
         showNewsList(viewModel)
     }
 
     fun showNewsList(viewModel : MainViewModel) {
         GlobalScope.launch(Dispatchers.Main) {
-            viewModel.getNewsList()
+            viewModel.doAction()
         }
+    }
+
+    @BindingAdapter("app:bindItems")
+    fun bindItems(view : RecyclerView, items : ArrayList<News>) {
+        val adapter = view.adapter as? NewsDataAdapter ?: NewsDataAdapter(this).apply {
+            view.adapter = this
+        }
+        adapter.items = items
+        adapter.notifyDataSetChanged()
     }
 }
