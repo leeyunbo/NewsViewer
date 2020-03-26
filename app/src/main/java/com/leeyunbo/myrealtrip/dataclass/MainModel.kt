@@ -10,7 +10,7 @@ import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
 
-class MainModel(val viewModel : MainViewModel) {
+class MainModel() {
     val urlString = "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko"
     suspend fun loadNewsData() : List<News> {
         return downloadUrl()?.use {

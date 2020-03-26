@@ -1,7 +1,9 @@
 package com.leeyunbo.myrealtrip
 
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ObservableArrayList
@@ -15,6 +17,8 @@ import com.leeyunbo.myrealtrip.viewmodel.MainViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.net.URI
+import java.net.URL
 
 /*
  * News 목록을 보여주는 액티비티 구현
@@ -38,10 +42,15 @@ class MainActivity : AppCompatActivity() {
 
     @BindingAdapter("app:bindItems")
     fun bindItems(view : RecyclerView, items : ArrayList<News>) {
-        val adapter = view.adapter as? NewsDataAdapter ?: NewsDataAdapter(this).apply {
+        val adapter = view.adapter as? NewsDataAdapter ?: NewsDataAdapter().apply {
             view.adapter = this
         }
         adapter.items = items
         adapter.notifyDataSetChanged()
+    }
+
+    @BindingAdapter("app:bindImage")
+    fun bindImage(view : ImageView, link : String) {
+        view.setImageURI(Uri.parse(link))
     }
 }

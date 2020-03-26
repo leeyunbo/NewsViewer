@@ -18,7 +18,7 @@ class MainViewModel : ViewModel() {
     }
 
     val model : MainModel by lazy {
-        MainModel(this)
+        MainModel()
     }
 
 

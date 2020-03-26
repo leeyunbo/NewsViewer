@@ -21,7 +21,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                app:layout_constraintStart_toStartOf="parent"
+                app:bindImage="@{news.image}"/>
         <TextView
                 android:text="@{news.title}"
                 android:textSize="15dp"
