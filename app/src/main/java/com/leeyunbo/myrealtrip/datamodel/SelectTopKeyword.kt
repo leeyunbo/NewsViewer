@@ -1,7 +1,9 @@
 package com.leeyunbo.myrealtrip.datamodel
 
+import com.leeyunbo.myrealtrip.dataclass.News
+
 object SelectTopKeyword {
-    fun getTopKeywords(keywords : String) : ArrayList<String> {
+    fun getTopKeywords(description : String) : ArrayList<String> {
         val topKeywords = ArrayList<String>()
 
 

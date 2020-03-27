@@ -1,6 +1,6 @@
 package com.leeyunbo.myrealtrip.dataclass
 
-data class News(val title : String,
-                val content : String,
-                val keyword : ArrayList<String>,
-                val image : String)
+data class News(var title : String,
+                var content : String,
+                var keyword : ArrayList<String>,
+                var image : String)
