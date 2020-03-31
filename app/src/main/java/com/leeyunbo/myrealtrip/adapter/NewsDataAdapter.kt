@@ -34,6 +34,5 @@ class NewsDataAdapter() : RecyclerView.Adapter<ViewHolder>() {
 
 class ViewHolder(view : View) : RecyclerView.ViewHolder(view) {
     val binding : NewsItemBinding = NewsItemBinding()
-
     fun bind(news : News) = binding.setNews(news)
 }
