@@ -6,13 +6,16 @@ import kotlin.collections.ArrayList
 
 object SelectTopKeyword {
     fun getTopKeywords(description : String) : ArrayList<String>? {
-        val st : StringTokenizer = StringTokenizer(description,"!@#$%^&*(),./?:;][=-…' ")
+        val st : StringTokenizer = StringTokenizer(description,"!@#$%^&*(),./?:;][=-…'\" ")
         val wordList : List<String> = st.toList() as List<String>
         val map = wordList
             .filter { it.length >= 2 }
             .asSequence()
             .groupingBy { it }
             .eachCount()
+            .toMap()
+
+        System.out.println(map.toString())
 
         val keywordPQueue : PriorityQueue<Map.Entry<String,Int>> =  PriorityQueue(map.size,
             Keyword.KeywordComparator

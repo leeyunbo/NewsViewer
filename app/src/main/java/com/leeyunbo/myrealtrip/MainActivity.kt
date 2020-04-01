@@ -5,12 +5,13 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.leeyunbo.myrealtrip.adapter.NewsDataAdapter
+import com.leeyunbo.myrealtrip.adapters.NewsDataAdapter
 import com.leeyunbo.myrealtrip.databinding.ActivityMainBinding
 import com.leeyunbo.myrealtrip.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 /*
@@ -23,11 +24,11 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         viewModel = MainViewModel()
-
-        initRecyclerView()
-        showNewsList(viewModel)
+        GlobalScope.launch(Dispatchers.Main) {
+            showNewsList(viewModel).await()
+       }
         binding.vm = viewModel
-
+        initRecyclerView()
     }
 
     fun initRecyclerView() {
@@ -36,9 +37,7 @@ class MainActivity : AppCompatActivity() {
         main_activity_rv.adapter = NewsDataAdapter()
     }
 
-    fun showNewsList(viewModel : MainViewModel) {
-        GlobalScope.launch(Dispatchers.Main) {
-            viewModel.doAction()
-        }
+    fun showNewsList(viewModel : MainViewModel) = GlobalScope.async {
+        viewModel.doAction()
     }
 }

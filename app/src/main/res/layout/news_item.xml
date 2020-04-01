@@ -3,19 +3,16 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <import type="android.view.View"></import>
         <variable name="news"
                   type="com.leeyunbo.myrealtrip.data.News"/>
     </data>
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
         <ImageView
                 android:layout_width="80dp"
                 android:layout_height="100dp"
-                android:src="@drawable/ic_launcher_background"
                 android:id="@+id/item_img"
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="5dp"

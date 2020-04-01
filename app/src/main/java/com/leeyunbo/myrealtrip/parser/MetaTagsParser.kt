@@ -28,13 +28,13 @@ object MetaTagsParser {
 
     fun parseMetaTags(url : String) : HashMap<String,String> {
         val sc : SSLContext = SSLContext.getInstance("SSL")
+        val resultMap : HashMap<String,String> = HashMap()
         sc.init(null, trustAllCerts, SecureRandom())
         HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
-        val doc: Document = Jsoup.connect(url).get()
-        val ogTags: Elements = doc.select("meta[property^=og:]")
-        val resultMap : HashMap<String,String> = HashMap()
-
         try {
+            val doc: Document = Jsoup.connect(url).get()
+            val ogTags: Elements = doc.select("meta[property^=og:]")
+
             ogTags.forEach { element ->
                 var property = element.attr("property")
                 when {

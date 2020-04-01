@@ -3,6 +3,7 @@ package com.leeyunbo.myrealtrip.parser
 import android.util.Xml
 import androidx.databinding.ObservableArrayList
 import com.leeyunbo.myrealtrip.data.News
+import kotlinx.coroutines.*
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -18,7 +19,7 @@ import java.lang.IllegalStateException
 object NewsXmlParser {
     private val ns : String? = null
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream) : ObservableArrayList<News> {
+    suspend fun parse(inputStream: InputStream) : ObservableArrayList<News> {
         inputStream.use { inputStream ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -30,8 +31,9 @@ object NewsXmlParser {
 
     //1. parsing 시작
     @Throws(XmlPullParserException::class, IOException::class)
-    private fun readNews(parser : XmlPullParser) : ObservableArrayList<News> {
+    private suspend fun readNews(parser : XmlPullParser) : ObservableArrayList<News> {
         var newsList = ObservableArrayList<News>()
+        var deffered : ArrayList<Job> = ArrayList()
         parser.require(XmlPullParser.START_TAG, ns,"rss")
         while (parser.next() != XmlPullParser.END_DOCUMENT) {
             if (parser.eventType != XmlPullParser.START_TAG) {
@@ -40,7 +42,6 @@ object NewsXmlParser {
             if (parser.name == "item"){
                 newsList.add(readItem(parser))
             }
-
         }
         return newsList
     }
@@ -66,8 +67,11 @@ object NewsXmlParser {
                     val map = readOther(link)
                     description = map.get("description")
                     imageUrl = map.get("image")
+
+
                     if (description != null) keywords =
                         SelectTopKeyword.getTopKeywords(description)
+
                 }
             }
         }

@@ -6,15 +6,23 @@ import com.leeyunbo.myrealtrip.data.MainModel
 import com.leeyunbo.myrealtrip.data.News
 
 class MainViewModel : ViewModel() {
-    var newsList : ObservableArrayList<News> = ObservableArrayList()
+    var items : ObservableArrayList<News> = ObservableArrayList()
+
+    init {
+        items.add(News("hello","hello",null,null))
+        items.add(News("hello","hello",null,null))
+        items.add(News("hello","hello",null,null))
+        items.add(News("hello","hello",null,null))
+        items.add(News("hello","hello",null,null))
+    }
 
     val model : MainModel by lazy {
         MainModel()
     }
 
     suspend fun doAction() {
-        System.out.println("doAction()")
-        this.newsList = model.loadNewsData()
+        this.items = model.loadNewsData()
+        System.out.println("change NewsList")
     }
 
 }
