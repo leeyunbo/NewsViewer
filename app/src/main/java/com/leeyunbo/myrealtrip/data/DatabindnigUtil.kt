@@ -1,15 +1,12 @@
-package com.leeyunbo.myrealtrip.datamodel
+package com.leeyunbo.myrealtrip.data
 
 import android.widget.ImageView
-import androidx.annotation.NonNull
 import androidx.databinding.BindingAdapter
 import androidx.databinding.ObservableArrayList
-import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.leeyunbo.myrealtrip.R
 import com.leeyunbo.myrealtrip.adapter.NewsDataAdapter
-import com.leeyunbo.myrealtrip.dataclass.News
 
 @BindingAdapter("bind_items")
 fun bindItems(view : RecyclerView, news : ObservableArrayList<News>) {

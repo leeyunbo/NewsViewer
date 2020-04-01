@@ -1,7 +1,7 @@
-package com.leeyunbo.myrealtrip.datamodel
+package com.leeyunbo.myrealtrip.data
 
 import androidx.databinding.ObservableArrayList
-import com.leeyunbo.myrealtrip.dataclass.News
+import com.leeyunbo.myrealtrip.parser.NewsXmlParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -19,6 +19,7 @@ class MainModel() {
             } ?: ObservableArrayList()
         }
         deffered.await()
+        System.out.println(result.size)
         return result
     }
 

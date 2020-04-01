@@ -1,11 +1,17 @@
-package com.leeyunbo.myrealtrip.datamodel
+package com.leeyunbo.myrealtrip.parser
 
 import android.util.Log
-import com.leeyunbo.myrealtrip.dataclass.News
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
 import java.io.IOException
+import java.security.SecureRandom
+import java.security.cert.X509Certificate
+import javax.net.ssl.HttpsURLConnection
+import javax.net.ssl.SSLContext
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+
 
 /*
  * title : item > title
@@ -14,7 +20,16 @@ import java.io.IOException
  */
 
 object MetaTagsParser {
+    var trustAllCerts: Array<TrustManager> = arrayOf(object : X509TrustManager {
+        override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+        override fun checkClientTrusted(certs: Array<X509Certificate?>?, authType: String?) {}
+        override fun checkServerTrusted(certs: Array<X509Certificate?>?, authType: String?) {}
+    })
+
     fun parseMetaTags(url : String) : HashMap<String,String> {
+        val sc : SSLContext = SSLContext.getInstance("SSL")
+        sc.init(null, trustAllCerts, SecureRandom())
+        HttpsURLConnection.setDefaultSSLSocketFactory(sc.socketFactory)
         val doc: Document = Jsoup.connect(url).get()
         val ogTags: Elements = doc.select("meta[property^=og:]")
         val resultMap : HashMap<String,String> = HashMap()

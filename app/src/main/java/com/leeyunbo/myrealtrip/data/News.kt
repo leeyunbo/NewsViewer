@@ -1,4 +1,4 @@
-package com.leeyunbo.myrealtrip.dataclass
+package com.leeyunbo.myrealtrip.data
 
 data class News(var title : String?,
                 var description : String?,
