@@ -13,34 +13,33 @@ import java.io.IOException
  * keyword : item > link, <meta property="og:description"
  */
 
-object MetaDataParser {
-    fun getMetaData(url : String, news : News) {
-        try {
-            val dataList: ArrayList<String> = ArrayList()
-            val doc: Document = Jsoup.connect(url).get()
-            val ogTags: Elements = doc.select("meta[property^=og:]") ?: return
+object MetaTagsParser {
+    fun parseMetaTags(url : String) : HashMap<String,String> {
+        val doc: Document = Jsoup.connect(url).get()
+        val ogTags: Elements = doc.select("meta[property^=og:]")
+        val resultMap : HashMap<String,String> = HashMap()
 
+        try {
             ogTags.forEach { element ->
-                var text = element.attr("property")
+                var property = element.attr("property")
                 when {
-                    text == "og:image" -> {
-                        news.image = element.attr("content")
+                    property == "og:image" -> {
+                        resultMap.put("image",element.attr("content"))
                     }
-                    text == "og:description" -> {
-                        news.content = element.attr("content")
-                        news.keyword = SelectTopKeyword.getTopKeywords(news.content)
+                    property == "og:description" -> {
+                        resultMap.put("description", element.attr("content"))
                     }
                 }
             }
         } catch(e:IOException) {
             Log.e("IOException","MetaDataPraser.getMetadata()")
             e.printStackTrace()
-            return
         } catch(e:IllegalAccessException) {
             Log.e("IllegalAccessException","MetaDataParser.getMetaData()")
             e.printStackTrace()
-            return
         }
+
+        return resultMap
 
     }
 }

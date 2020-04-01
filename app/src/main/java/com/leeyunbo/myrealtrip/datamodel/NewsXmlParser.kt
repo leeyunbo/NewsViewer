@@ -1,8 +1,10 @@
 package com.leeyunbo.myrealtrip.datamodel
 
 import android.util.Xml
+import androidx.databinding.ObservableArrayList
 import com.leeyunbo.myrealtrip.dataclass.News
 import org.xmlpull.v1.XmlPullParser
+import java.io.BufferedReader
 import java.io.InputStream
 import java.lang.IllegalStateException
 
@@ -13,18 +15,21 @@ import java.lang.IllegalStateException
  */
 
 object NewsXmlParser {
-    fun parse(inputStream: InputStream) : ArrayList<News> {
-        inputStream.use {
-            val parser : XmlPullParser = Xml.newPullParser()
-            parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
-            parser.setInput(it,null)
-            parser.nextTag()
-            return readFeed(parser)
+    fun parse(inputStream: InputStream) : ObservableArrayList<News>? {
+        System.out.println("parse()")
+        val parser : XmlPullParser = Xml.newPullParser()
+        parser.apply {
+            setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
+            setInput(inputStream,null)
+            next()
         }
+        return readFeed(parser)
     }
 
-    private fun readFeed(parser : XmlPullParser) : ArrayList<News> {
-        val newsList = ArrayList<News>()
+    //1. START_TAG를 만났을 때, item이면 파싱을 시작(readNews())
+    private fun readFeed(parser : XmlPullParser) : ObservableArrayList<News>? {
+        System.out.println("readFeed()")
+        val newsList = ObservableArrayList<News>()
 
         parser.require(XmlPullParser.START_TAG,null,"item")
         while (parser.next() != XmlPullParser.END_TAG) {
@@ -41,67 +46,55 @@ object NewsXmlParser {
         return newsList
     }
 
+    //2. END_TAG를 만날때까지(</item>) 나오는 태그들에 대하여, 동작을 진행한다.
     private fun readNews(parser : XmlPullParser) : News {
         parser.require(XmlPullParser.START_TAG, null, "item")
         lateinit var title : String
-        lateinit var content : String
-        lateinit var keyword : ArrayList<String>
-        lateinit var image : String
+        var content : String? = null
+        var image : String? = null
+        var keyword : ArrayList<String>? = null
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
             }
             when (parser.name) {
+                //2-1. <title>이면 title 데이터를 읽어온다(readTitle())
                 "title" -> title = readTitle(parser)
+                //2-2. <link>이면 link 데이터를 읽어온다(readLink())
                 "link" -> {
                     val link = readLink(parser)
-                    content = readContent(link)
-                    keyword = readKeyword(link)
-                    image = readImage(link)
+                    val map = readOther(link)
+                    content = map.get("content")
+                    image = map.get("image")
+                    if(content != null) keyword = SelectTopKeyword.getTopKeywords(content)
                 }
             }
         }
         return News(title,content,keyword,image)
     }
 
+    // <title>여권 “채널A-검찰 유착 의혹에 윤석열 총장 입장 밝혀라” - 미디어오늘</title>
     private fun readTitle(parser : XmlPullParser) : String {
-        var title = ""
         parser.require(XmlPullParser.START_TAG, null, "title")
-        title = readText(parser)
+        val title = readText(parser)
         parser.require(XmlPullParser.END_TAG, null, "title")
         return title
     }
 
 
+    // <link> https://news.google.com/__i/rss/rd/articles </link>
     private fun readLink(parser : XmlPullParser) : String {
-        var link = ""
         parser.require(XmlPullParser.START_TAG, null, "link")
-        val tag = parser.name
-        val relType = parser.getAttributeValue(null, "rel")
-        if (tag == "link") {
-            if (relType == "alternate") {
-                link = parser.getAttributeValue(null, "href")
-                parser.nextTag()
-            }
-        }
+        val link = readText(parser)
         parser.require(XmlPullParser.END_TAG, null, "link")
         return link
     }
 
-    private fun readImage(link : String) : String {
-        var image = ""
-        return image
-    }
-
-    private fun readContent(link : String) : String {
-        var content = ""
-        return content
-    }
-
-    private fun readKeyword(link : String) : ArrayList<String> {
-        var keyword = ArrayList<String>()
-        return keyword
-
+    // <meta name ="og:image" content="">
+    // <meta name ="og:description" content="">
+    private fun readOther(link : String) : HashMap<String, String> {
+        val map = MetaTagsParser.parseMetaTags(link)
+        return map
     }
 
     private fun readText(parser : XmlPullParser) : String {

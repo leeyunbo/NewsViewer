@@ -5,21 +5,25 @@ import kotlin.Comparator
 import kotlin.collections.ArrayList
 
 object SelectTopKeyword {
-    fun getTopKeywords(description : String) : ArrayList<String> {
-        val topKeywords = ArrayList<String>()
+    fun getTopKeywords(description : String) : ArrayList<String>? {
         val wordList = description.split(" ")
         val map = wordList
             .asSequence()
             .groupingBy { it }
             .eachCount()
 
-        val kFrequent : PriorityQueue<Map.Entry<String,Int>> =  PriorityQueue(map.size,Keyword.KeywordComparator)
+        val keywordPQueue : PriorityQueue<Map.Entry<String,Int>> =  PriorityQueue(map.size,Keyword.KeywordComparator)
 
-        for(entry in map.entries) kFrequent.add(entry)
+        for(entry in map.entries) keywordPQueue.add(entry)
 
-        for(i in 0..3) topKeywords.add(kFrequent.poll().key)
 
-        return topKeywords
+        var size : Int = keywordPQueue.size
+        if(keywordPQueue.size > 3) size = 3
+
+        val keywords = ArrayList<String>()
+        for(keywordsCnt in 0..size) keywords.add(keywordPQueue.poll().key)
+
+        return keywords
     }
 }
 

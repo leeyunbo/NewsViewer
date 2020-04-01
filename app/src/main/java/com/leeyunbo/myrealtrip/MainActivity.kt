@@ -26,12 +26,12 @@ import java.net.URL
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel : MainViewModel by lazy {
-            MainViewModel()
-        }
-        var binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,R.layout.activity_main)
-        binding.setVm(viewModel)
+        val viewModel = MainViewModel()
         showNewsList(viewModel)
+
+        var binding = DataBindingUtil.setContentView<ActivityMainBinding>(this,R.layout.activity_main)
+        binding.vm = viewModel
+
     }
 
     fun showNewsList(viewModel : MainViewModel) {

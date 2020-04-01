@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
@@ -22,7 +24,7 @@ android {
         }
     }
     dataBinding {
-        enabled = true
+        enabled true
     }
 }
 
@@ -42,4 +44,5 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'org.jsoup:jsoup:1.12.1'
+    kapt 'com.android.databinding:compiler:3.1.3'
 }

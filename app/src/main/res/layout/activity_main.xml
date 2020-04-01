@@ -4,7 +4,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
-        <variable name="vm" type="com.leeyunbo.myrealtrip.viewmodel.MainViewModel"/>
+        <import type="android.view.View"></import>
+        <variable name="vm"
+                  type="com.leeyunbo.myrealtrip.viewmodel.MainViewModel"/>
     </data>
 
     <LinearLayout
@@ -12,10 +14,10 @@
             android:layout_height="match_parent"
             tools:context=".MainActivity">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/detail_activity_rv"
+            android:id="@+id/main_activity_rv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:bindItems="@{vm.newsList}">
+            app:bind_items="@{vm.newsList}">
         </androidx.recyclerview.widget.RecyclerView>
     </LinearLayout>
 </layout>
