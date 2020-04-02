@@ -1,18 +1,13 @@
 package com.leeyunbo.myrealtrip.parser
 
-import android.provider.Settings.Global.getString
 import android.util.Xml
-import androidx.core.content.res.TypedArrayUtils.getText
 import androidx.databinding.ObservableArrayList
-import com.leeyunbo.myrealtrip.R
 import com.leeyunbo.myrealtrip.data.News
 import com.leeyunbo.myrealtrip.util.SelectTopKeyword
-import kotlinx.coroutines.*
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.io.InputStream
-import java.lang.IllegalStateException
 
 /*
  * title : item > title

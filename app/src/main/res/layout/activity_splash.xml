@@ -8,9 +8,9 @@
         tools:context=".SplashActivity">
 
     <ImageView
-            android:layout_width="320dp"
-            android:layout_height="320dp"
-            android:layout_marginTop="80dp"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:layout_marginTop="70dp"
             android:src="@mipmap/ic_launcher_foreground"
             android:scaleType="fitXY"
             android:adjustViewBounds="true"

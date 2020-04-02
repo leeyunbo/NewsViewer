@@ -2,6 +2,7 @@ package com.leeyunbo.myrealtrip.data
 
 import androidx.databinding.ObservableArrayList
 import com.leeyunbo.myrealtrip.parser.NewsXmlParser
+import java.io.BufferedInputStream
 import java.io.InputStream
 import java.net.HttpURLConnection
 import java.net.URL
@@ -23,13 +24,13 @@ class MainModel {
 
     private fun downloadUrl() : InputStream? {
         val url = URL(urlString)
-        return (url.openConnection() as? HttpURLConnection)?.run {
+        return BufferedInputStream((url.openConnection() as? HttpURLConnection)?.run {
                readTimeout = 15000
                connectTimeout = 15000
                requestMethod = "GET"
                doInput = true
                connect()
                inputStream
-        }
+        })
     }
 }

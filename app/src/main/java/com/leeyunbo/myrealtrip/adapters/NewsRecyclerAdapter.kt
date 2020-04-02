@@ -31,8 +31,6 @@ class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
         val callback = RecyclerDiffCallback(this.items, _items)
         val result : DiffUtil.DiffResult = DiffUtil.calculateDiff(callback)
 
-        System.out.println("updateItems() _items : ${_items.toString()}")
-
         this.items.clear()
         this.items.addAll(_items)
         result.dispatchUpdatesTo(this)
@@ -44,7 +42,6 @@ class BindingViewHolder(private val mBinding : NewsItemBinding) : RecyclerView.V
         mBinding.apply {
             news = items
         }
-
         mBinding.root.setOnClickListener { view ->
             val detailIntent = Intent(view.context, DetailActivity::class.java)
             detailIntent.putExtra("news",items)

@@ -17,18 +17,23 @@ import kotlinx.coroutines.*
  */
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit var mViewModel : MainViewModel
-    lateinit var mBinding : ActivityMainBinding
+    lateinit var viewModel : MainViewModel
+    lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
-
+        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         setRefreshLayout()
-        mViewModel = MainViewModel()
-        showNewsList(mViewModel)
-        mBinding.apply {
-            vm = mViewModel
+        viewModel = MainViewModel()
+        CoroutineScope(Dispatchers.Main).launch {
+            main_activity_rf.isRefreshing = true
+            CoroutineScope(Dispatchers.IO).async {
+                showNewsList(viewModel)
+            }.await()
+            main_activity_rf.isRefreshing = false
+        }
+        binding.apply {
+            vm = viewModel
         }
         initRecyclerView()
 
@@ -37,7 +42,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         CoroutineScope(Dispatchers.Main).launch {
             CoroutineScope(Dispatchers.IO).async {
-                showNewsList(mViewModel)
+                showNewsList(viewModel)
             }.await()
             main_activity_rf.isRefreshing = false
         }
@@ -63,13 +68,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
      * viewModel에게 데이터 최신화를 요청하는 메서드
      */
     fun showNewsList(viewModel : MainViewModel){
-        CoroutineScope(Dispatchers.Main).launch {
-            main_activity_rf.isRefreshing = true
-            CoroutineScope(Dispatchers.IO).async {
-                viewModel.doAction()
-            }.await()
-            main_activity_rf.isRefreshing = false
-        }
+        viewModel.doAction()
     }
 
 
