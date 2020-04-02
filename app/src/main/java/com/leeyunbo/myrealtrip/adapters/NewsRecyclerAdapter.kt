@@ -1,34 +1,34 @@
 package com.leeyunbo.myrealtrip.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.ObservableArrayList
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.leeyunbo.myrealtrip.R
+import com.leeyunbo.myrealtrip.DetailActivity
 import com.leeyunbo.myrealtrip.databinding.NewsItemBinding
 import com.leeyunbo.myrealtrip.data.News
 
 /*
  * News RecyclerView를 위한 어댑터 구현
  */
-class NewsDataAdapter : RecyclerView.Adapter<ViewHolder>() {
+class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
     var items : ArrayList<News> = ArrayList()
     override fun getItemCount() = items.size
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        System.out.println(items.get(position))
+    override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         holder.bind(items.get(position))
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(NewsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
+        return BindingViewHolder(NewsItemBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     fun updateItems(_items : ArrayList<News>) {
         val callback = RecyclerDiffCallback(this.items,_items)
         val result : DiffUtil.DiffResult = DiffUtil.calculateDiff(callback)
+
+        System.out.println("updateItems() _items : ${_items.toString()}")
 
         this.items.clear()
         this.items.addAll(_items)
@@ -36,10 +36,16 @@ class NewsDataAdapter : RecyclerView.Adapter<ViewHolder>() {
     }
 }
 
-class ViewHolder(private val binding : NewsItemBinding) : RecyclerView.ViewHolder(binding.root){
+class BindingViewHolder(private val binding : NewsItemBinding) : RecyclerView.ViewHolder(binding.root){
     fun bind(items : News?) {
         binding.apply {
             news = items
+        }
+
+        binding.root.setOnClickListener { view ->
+            val detailIntent = Intent(view.context, DetailActivity::class.java)
+            detailIntent.putExtra("news",items)
+            view.context.startActivity(detailIntent)
         }
     }
 }

@@ -6,7 +6,7 @@ import kotlin.collections.ArrayList
 
 object SelectTopKeyword {
     fun getTopKeywords(description : String) : ArrayList<String>? {
-        val st : StringTokenizer = StringTokenizer(description,"!@#$%^&*(),./?:;][=-…'\" ")
+        val st = StringTokenizer(description,"!@#$%^&*(),./?:;][=-…'\"\t◆ ")
         val wordList : List<String> = st.toList() as List<String>
         val map = wordList
             .filter { it.length >= 2 }
@@ -24,11 +24,11 @@ object SelectTopKeyword {
         for(entry in map.entries) keywordPQueue.add(entry)
 
 
-        var size : Int = keywordPQueue.size
-        if(keywordPQueue.size > 3) size = 2
+        var size : Int = keywordPQueue.size-1
+        if(size > 2) size = 2
 
         val keywords = ArrayList<String>()
-        for(keywordsCnt in 0..size) keywords.add(keywordPQueue.poll().key)
+        for(keywordsCnt in 0..size) keywords.add(keywordPQueue?.poll().key)
 
         return keywords
     }

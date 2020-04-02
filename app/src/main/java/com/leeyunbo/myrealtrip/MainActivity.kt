@@ -2,6 +2,7 @@ package com.leeyunbo.myrealtrip
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,8 +28,11 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch(Dispatchers.Main) {
             showNewsList(viewModel).await()
        }
-        binding.vm = viewModel
+        binding.apply {
+            vm = viewModel
+        }
         initRecyclerView()
+
     }
 
     fun initRecyclerView() {
@@ -40,4 +44,6 @@ class MainActivity : AppCompatActivity() {
     fun showNewsList(viewModel : MainViewModel) = GlobalScope.async {
         viewModel.doAction()
     }
+
+
 }

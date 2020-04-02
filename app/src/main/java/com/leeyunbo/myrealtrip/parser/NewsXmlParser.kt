@@ -54,20 +54,26 @@ object NewsXmlParser {
         var imageUrl: String? = null
         var keywords: ArrayList<String>? = null
         lateinit var link : String
+        var reg = Regex("\\s+")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
             }
             when (parser.name) {
-                //2-1. <title>이면 title 데이터를 읽어온다(readTitle())
                 "title" -> title = readTitle(parser)
-                //2-2. <link>이면 link 데이터를 읽어온다(readLink())
                 "link" -> {
                     link = readLink(parser)
                     val map = readOther(link)
-                    description = map.get("description")
+                    description = map.get("description").apply {
+                        this?.replace("\n"," ")
+                        this?.replace("\t"," ")
+                        this?.replace("&nbsp;"," ")
+                        this?.trim()
+                        this?.trimMargin()
+                        this?.trimIndent()
+                        this?.replace(reg,"")
+                    }
                     imageUrl = map.get("image")
-
 
                     if (description != null) keywords =
                         SelectTopKeyword.getTopKeywords(description)
@@ -76,7 +82,7 @@ object NewsXmlParser {
             }
         }
         System.out.println("keywords : ${keywords.toString()}, link : ${link}")
-        return News(title, description, keywords, imageUrl)
+        return News(title, description, keywords, imageUrl,link)
     }
 
 

@@ -3,58 +3,56 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable name="news"
+                  type="com.leeyunbo.myrealtrip.data.News"/>
+    </data>
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
             tools:context=".DetailActivity">
-        <ImageView
-                android:id="@+id/detail_back_btn"
-                android:layout_width="40dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_back_button"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
-
         <TextView
-                android:text="갤럭시S 신제품은 '갤럭시S20'...실물 사진 유출..."
-                android:textSize="18dp"
-                android:textStyle="bold"
+                android:id="@+id/detail_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_title_tv"
-                android:layout_marginTop="50dp"
+                android:text="@{news.title}"
+                android:textSize="18dp"
+                android:textStyle="bold"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"/>
         <TextView
-                android:text="갤럭시S20"
+                android:id="@+id/detail_keyword_tv1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_keyword_tv1"
+                app:bind_keyword="@{news.keywords}"
+                app:keyword_position="@{1}"
                 app:layout_constraintLeft_toLeftOf="@id/detail_title_tv"
                 app:layout_constraintTop_toBottomOf="@id/detail_title_tv"/>
         <TextView
-                android:text="모델로"
+                android:id="@+id/detail_keyword_tv2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_keyword_tv2"
                 android:layout_marginLeft="5dp"
+                app:bind_keyword="@{news.keywords}"
+                app:keyword_position="@{2}"
                 app:layout_constraintLeft_toRightOf="@id/detail_keyword_tv1"
                 app:layout_constraintTop_toBottomOf="@id/detail_title_tv"/>
         <TextView
-                android:text="카메라"
+                android:id="@+id/detail_keyword_tv3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_keyword_tv3"
                 android:layout_marginLeft="5dp"
+                app:bind_keyword="@{news.keywords}"
+                app:keyword_position="@{3}"
                 app:layout_constraintLeft_toRightOf="@id/detail_keyword_tv2"
                 app:layout_constraintTop_toBottomOf="@id/detail_title_tv"
           />
         <WebView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:id="@+id/detail_wv"
                 android:layout_marginTop="10dp"
+                android:id="@+id/detail_wv"
                 app:layout_constraintTop_toBottomOf="@+id/detail_keyword_tv1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"

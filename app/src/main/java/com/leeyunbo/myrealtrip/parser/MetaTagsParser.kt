@@ -34,6 +34,7 @@ object MetaTagsParser {
         try {
             val doc: Document = Jsoup.connect(url).get()
             val ogTags: Elements = doc.select("meta[property^=og:]")
+            val nextOgTags : Elements = doc.select("meta[name]")
 
             ogTags.forEach { element ->
                 var property = element.attr("property")
@@ -44,8 +45,23 @@ object MetaTagsParser {
                     property == "og:description" -> {
                         resultMap.put("description", element.attr("content"))
                     }
+
                 }
             }
+
+            if(!resultMap.containsKey("description")) {
+                nextOgTags.forEach {element ->
+                    var name = element.attr("name")
+                    when {
+                        name == "description" -> {
+                            resultMap.put("description", element.attr("content"))
+                        }
+                    }
+
+                }
+            }
+
+
         } catch(e:IOException) {
             Log.e("IOException","MetaDataPraser.getMetadata()")
             e.printStackTrace()
