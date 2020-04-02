@@ -1,7 +1,10 @@
 package com.leeyunbo.myrealtrip.parser
 
+import android.provider.Settings.Global.getString
 import android.util.Xml
+import androidx.core.content.res.TypedArrayUtils.getText
 import androidx.databinding.ObservableArrayList
+import com.leeyunbo.myrealtrip.R
 import com.leeyunbo.myrealtrip.data.News
 import com.leeyunbo.myrealtrip.util.SelectTopKeyword
 import kotlinx.coroutines.*
@@ -16,16 +19,17 @@ import java.lang.IllegalStateException
  * image : item > link, <meta property="og:image"
  * keyword : item > link, <meta property="og:description"
  * keyword : item > link, <meta name ="description"
+ * Xml Parser, Link를 얻어내게 되면 Html Parser에게 전달한다.
  */
 
 object NewsXmlParser {
     private val ns : String? = null
     @Throws(XmlPullParserException::class, IOException::class)
-    fun parse(inputStream: InputStream) : ObservableArrayList<News> {
-        inputStream.use { inputStream ->
+     fun parse(inputStream: InputStream) : ObservableArrayList<News> {
+        inputStream.use {
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
-            parser.setInput(inputStream, null)
+            parser.setInput(it, null)
             parser.nextTag()
             return readNews(parser)
         }
@@ -35,16 +39,16 @@ object NewsXmlParser {
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readNews(parser : XmlPullParser) : ObservableArrayList<News> {
         var newsList = ObservableArrayList<News>()
-        var deffered : ArrayList<Job> = ArrayList()
-        parser.require(XmlPullParser.START_TAG, ns,"rss")
-        while (parser.next() != XmlPullParser.END_DOCUMENT) {
-            if (parser.eventType != XmlPullParser.START_TAG) {
-                continue
+            parser.require(XmlPullParser.START_TAG, ns, "rss")
+            while (parser.next() != XmlPullParser.END_DOCUMENT) {
+                if (parser.eventType != XmlPullParser.START_TAG) {
+                    continue
+                }
+                if (parser.name == "item") {
+                    newsList.add(readItem(parser))
+                }
+
             }
-            if (parser.name == "item"){
-                newsList.add(readItem(parser))
-            }
-        }
         return newsList
     }
 

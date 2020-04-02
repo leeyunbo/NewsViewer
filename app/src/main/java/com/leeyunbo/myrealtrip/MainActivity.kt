@@ -1,9 +1,7 @@
 package com.leeyunbo.myrealtrip
 
-import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ProgressBar
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -66,7 +64,9 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         main_activity_rv.adapter = NewsDataAdapter()
     }
 
-
+    /*
+     * viewModel에게 데이터 최신화를 요청하는 메서드
+     */
     fun showNewsList(viewModel : MainViewModel){
         viewModel.doAction()
     }

@@ -3,10 +3,12 @@ package com.leeyunbo.myrealtrip.util
 import java.util.*
 import kotlin.Comparator
 import kotlin.collections.ArrayList
-
+/*
+ * 가장 많이 나타난 Keyword를 뽑아 내기 위한 분석 클래스
+ */
 object SelectTopKeyword {
     fun getTopKeywords(description : String) : ArrayList<String>? {
-        val st = StringTokenizer(description,"`“”’‘<>!@#$%^&*(),./?:;][=-…\'\"\t◆·\n ")
+        val st = StringTokenizer(description,"`“”’‘<>!@#$%^&*(),./?~:;][=-…\'\"\t◆·\n ")
         val wordList : List<String> = st.toList() as List<String>
         val pairList : List<Pair<String,Int>> = wordList
             .filter { it.length >= 2 }
@@ -17,11 +19,6 @@ object SelectTopKeyword {
 
         Collections.sort(pairList, Comparators.keyComparator)
         Collections.sort(pairList, Comparators.valueComparator)
-
-        for(pair in pairList) {
-            print("${pair.toString()} ")
-        }
-
 
         var size : Int = pairList.size
         if(size > 3) size = 3

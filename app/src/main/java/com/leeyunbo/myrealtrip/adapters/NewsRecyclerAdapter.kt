@@ -13,6 +13,7 @@ import com.leeyunbo.myrealtrip.util.RecyclerDiffCallback
 /*
  * News RecyclerView를 위한 어댑터 구현
  */
+
 class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
     var items : ArrayList<News> = ArrayList()
     override fun getItemCount() = items.size

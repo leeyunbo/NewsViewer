@@ -2,7 +2,9 @@ package com.leeyunbo.myrealtrip.data
 
 import android.os.Parcel
 import android.os.Parcelable
-
+/*
+ * News의 다양한 정보를 담고 있는 data class
+ */
 data class News(var title: String?, var description: String?, var keywords: ArrayList<String>?, var imageUrl: String?, var link: String?) : Parcelable {
     constructor(source: Parcel) : this(
         source.readString(),

@@ -13,7 +13,9 @@ import com.bumptech.glide.Glide
 import com.leeyunbo.myrealtrip.R
 import com.leeyunbo.myrealtrip.data.News
 import com.leeyunbo.myrealtrip.util.NewsWebViewClient
-
+/*
+ * Data Binding Adapter
+ */
 @BindingAdapter("bind_items")
 fun bindItems(view : RecyclerView, items : ObservableArrayList<News>) {
     val adapter = view.adapter as? NewsDataAdapter ?: NewsDataAdapter().apply {
@@ -39,12 +41,12 @@ fun bindKeyword(view : TextView, keywords : ArrayList<String>, position : Int) {
         return
     }
 
-    if(keywords?.size < position) {
+    if(keywords.size < position) {
         view.visibility = View.INVISIBLE
         return
     }
 
-    view.text = keywords?.get(position-1)
+    view.text = keywords.get(position-1)
 }
 
 @BindingAdapter("bind_url")
