@@ -50,7 +50,7 @@ dependencies {
     // glide 라이브러리 사용 https://github.com/bumptech/glide
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
-    implementation 'org.jsoup:jsoup:1.10.3'
+    implementation 'org.jsoup:jsoup:1.11.2'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     kapt 'com.android.databinding:compiler:3.1.3'
 
