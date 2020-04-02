@@ -12,10 +12,10 @@ class MainViewModel : ViewModel() {
         MainModel()
     }
 
-    suspend fun doAction() {
-        this.items.addAll(model.loadNewsData())
-        System.out.println("change NewsList : ${items.toString()}")
+    fun doAction() {
+        model.loadNewsData().let {
+            items.clear()
+            items.addAll(it)
+        }
     }
-
-
 }

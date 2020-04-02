@@ -1,4 +1,4 @@
-package com.leeyunbo.myrealtrip.adapters
+package com.leeyunbo.myrealtrip.util
 
 import androidx.recyclerview.widget.DiffUtil
 import com.leeyunbo.myrealtrip.data.News

@@ -13,11 +13,16 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             tools:context=".MainActivity">
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/main_activity_rv"
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/main_activity_rf"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:bind_items="@{vm.items}">
-        </androidx.recyclerview.widget.RecyclerView>
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/main_activity_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:bind_items="@{vm.items}">
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

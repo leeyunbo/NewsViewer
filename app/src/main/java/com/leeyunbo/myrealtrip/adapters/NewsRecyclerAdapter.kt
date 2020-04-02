@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.leeyunbo.myrealtrip.DetailActivity
 import com.leeyunbo.myrealtrip.databinding.NewsItemBinding
 import com.leeyunbo.myrealtrip.data.News
+import com.leeyunbo.myrealtrip.util.RecyclerDiffCallback
 
 /*
  * News RecyclerView를 위한 어댑터 구현
@@ -25,7 +26,7 @@ class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
     }
 
     fun updateItems(_items : ArrayList<News>) {
-        val callback = RecyclerDiffCallback(this.items,_items)
+        val callback = RecyclerDiffCallback(this.items, _items)
         val result : DiffUtil.DiffResult = DiffUtil.calculateDiff(callback)
 
         System.out.println("updateItems() _items : ${_items.toString()}")

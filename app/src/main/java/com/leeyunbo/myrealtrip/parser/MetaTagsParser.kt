@@ -1,6 +1,7 @@
 package com.leeyunbo.myrealtrip.parser
 
 import android.util.Log
+import org.jsoup.HttpStatusException
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.select.Elements
@@ -45,7 +46,6 @@ object MetaTagsParser {
                     property == "og:description" -> {
                         resultMap.put("description", element.attr("content"))
                     }
-
                 }
             }
 
@@ -57,20 +57,18 @@ object MetaTagsParser {
                             resultMap.put("description", element.attr("content"))
                         }
                     }
-
                 }
             }
-
-
         } catch(e:IOException) {
             Log.e("IOException","MetaDataPraser.getMetadata()")
             e.printStackTrace()
         } catch(e:IllegalAccessException) {
             Log.e("IllegalAccessException","MetaDataParser.getMetaData()")
             e.printStackTrace()
+        } catch(e: HttpStatusException) {
+            Log.e("HttpStatusException", "MetaDataParser.getMetadata()")
+            e.printStackTrace()
         }
-
         return resultMap
-
     }
 }

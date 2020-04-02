@@ -3,6 +3,7 @@ package com.leeyunbo.myrealtrip.parser
 import android.util.Xml
 import androidx.databinding.ObservableArrayList
 import com.leeyunbo.myrealtrip.data.News
+import com.leeyunbo.myrealtrip.util.SelectTopKeyword
 import kotlinx.coroutines.*
 import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
@@ -14,12 +15,13 @@ import java.lang.IllegalStateException
  * title : item > title
  * image : item > link, <meta property="og:image"
  * keyword : item > link, <meta property="og:description"
+ * keyword : item > link, <meta name ="description"
  */
 
 object NewsXmlParser {
     private val ns : String? = null
     @Throws(XmlPullParserException::class, IOException::class)
-    suspend fun parse(inputStream: InputStream) : ObservableArrayList<News> {
+    fun parse(inputStream: InputStream) : ObservableArrayList<News> {
         inputStream.use { inputStream ->
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
@@ -31,7 +33,7 @@ object NewsXmlParser {
 
     //1. parsing 시작
     @Throws(XmlPullParserException::class, IOException::class)
-    private suspend fun readNews(parser : XmlPullParser) : ObservableArrayList<News> {
+    private fun readNews(parser : XmlPullParser) : ObservableArrayList<News> {
         var newsList = ObservableArrayList<News>()
         var deffered : ArrayList<Job> = ArrayList()
         parser.require(XmlPullParser.START_TAG, ns,"rss")
@@ -54,7 +56,7 @@ object NewsXmlParser {
         var imageUrl: String? = null
         var keywords: ArrayList<String>? = null
         lateinit var link : String
-        var reg = Regex("\\s+")
+        var reg = Regex("\\s")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
@@ -64,20 +66,19 @@ object NewsXmlParser {
                 "link" -> {
                     link = readLink(parser)
                     val map = readOther(link)
-                    description = map.get("description").apply {
-                        this?.replace("\n"," ")
-                        this?.replace("\t"," ")
-                        this?.replace("&nbsp;"," ")
-                        this?.trim()
-                        this?.trimMargin()
-                        this?.trimIndent()
-                        this?.replace(reg,"")
+                    description = map.get("description")?.apply {
+                        this.replace(reg," ")
+                        this.trim()
                     }
                     imageUrl = map.get("image")
 
-                    if (description != null) keywords =
-                        SelectTopKeyword.getTopKeywords(description)
-
+                    if (description != null) {
+                        keywords = SelectTopKeyword.getTopKeywords(description)
+                    }
+                    else {
+                        keywords = ArrayList()
+                        description = "내용이 없음"
+                    }
                 }
             }
         }
@@ -123,17 +124,4 @@ object NewsXmlParser {
         return result
     }
 
-    @Throws(XmlPullParserException::class, IOException::class)
-    private fun skip(parser : XmlPullParser) {
-        if (parser.eventType != XmlPullParser.START_TAG) {
-            throw IllegalStateException()
-        }
-        var depth = 1
-        while (depth != 0) {
-            when (parser.next()) {
-                XmlPullParser.END_TAG -> depth--
-                XmlPullParser.START_TAG -> depth++
-            }
-        }
-    }
 }

@@ -1,5 +1,9 @@
 package com.leeyunbo.myrealtrip.adapters
 
+import android.view.View
+import android.webkit.WebSettings
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
@@ -8,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.leeyunbo.myrealtrip.R
 import com.leeyunbo.myrealtrip.data.News
+import com.leeyunbo.myrealtrip.util.NewsWebViewClient
 
 @BindingAdapter("bind_items")
 fun bindItems(view : RecyclerView, items : ObservableArrayList<News>) {
@@ -29,7 +34,35 @@ fun bindImage(view : ImageView, imageUrl : String?) {
 
 @BindingAdapter("bind_keyword","keyword_position")
 fun bindKeyword(view : TextView, keywords : ArrayList<String>, position : Int) {
-    if(keywords.size >= position) {
-        view.text = keywords.get(position-1)
+    if(keywords == null) {
+        view.visibility= View.INVISIBLE
+        return
+    }
+
+    if(keywords?.size < position) {
+        view.visibility = View.INVISIBLE
+        return
+    }
+
+    view.text = keywords?.get(position-1)
+}
+
+@BindingAdapter("bind_url")
+fun bindUrl(view : WebView, url : String) {
+    if(url != null) {
+        view.settings.apply {
+            javaScriptEnabled = true
+            javaScriptCanOpenWindowsAutomatically = false
+            loadWithOverviewMode = true
+            useWideViewPort = true
+            builtInZoomControls = false
+            layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
+            cacheMode = WebSettings.LOAD_NO_CACHE
+            domStorageEnabled = true
+            setSupportZoom(false)
+            setSupportMultipleWindows(true)
+        }
+        view.webViewClient = NewsWebViewClient()
+        view.loadUrl(url)
     }
 }

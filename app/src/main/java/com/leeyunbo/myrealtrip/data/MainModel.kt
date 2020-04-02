@@ -12,11 +12,10 @@ import java.net.URL
 class MainModel() {
     val urlString = "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko"
     lateinit var result : ObservableArrayList<News>
-    suspend fun loadNewsData() : ObservableArrayList<News> {
+    fun loadNewsData() : ObservableArrayList<News> {
         result = downloadUrl()?.use {
             NewsXmlParser.parse(it)
         } ?: ObservableArrayList()
-        System.out.println(result.size)
         return result
     }
 
