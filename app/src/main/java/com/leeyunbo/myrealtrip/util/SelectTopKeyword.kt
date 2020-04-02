@@ -5,6 +5,9 @@ import kotlin.Comparator
 import kotlin.collections.ArrayList
 /*
  * 가장 많이 나타난 Keyword를 뽑아 내기 위한 분석 클래스
+ * Collections.sort() 는 Stable sort이기 때문에 사용 가능
+ * key , value 순으로 정렬 후 최대 상위 3개 데이터 추출
+ * 만약 3개보다 적다면, 리스트의 size만큼 데이터 추출
  */
 object SelectTopKeyword {
     fun getTopKeywords(description : String) : ArrayList<String>? {
@@ -23,18 +26,19 @@ object SelectTopKeyword {
         var size : Int = pairList.size
         if(size > 3) size = 3
 
-        val keywords = ArrayList<String>()
+        val topKeywords = ArrayList<String>()
         var pairIdx = 0
         for(pair in pairList) {
             if(pairIdx == size) break
-            keywords.add(pair.first)
+            topKeywords.add(pair.first)
             pairIdx++
         }
 
-        return keywords
+        return topKeywords
     }
 }
 
+// 특수한 인스턴스간 정렬을 위한 Comparator 선언
 class Comparators {
     object valueComparator : Comparator<Pair<String,Int>> {
         override fun compare(o1: Pair<String, Int>?, o2: Pair<String, Int>?): Int {

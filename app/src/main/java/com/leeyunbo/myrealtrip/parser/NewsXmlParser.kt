@@ -35,7 +35,7 @@ object NewsXmlParser {
         }
     }
 
-    //1. parsing 시작
+    //1. rss 태그로 이동 후, item 태그 search
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readNews(parser : XmlPullParser) : ObservableArrayList<News> {
         var newsList = ObservableArrayList<News>()
@@ -52,15 +52,16 @@ object NewsXmlParser {
         return newsList
     }
 
+    //2. item 태그 발견 후, item 내부의 태그 파싱
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readItem(parser : XmlPullParser) : News {
-        parser.require(XmlPullParser.START_TAG, ns,"item")
         var title: String? = null
         var description: String? = null
         var imageUrl: String? = null
         var keywords: ArrayList<String>? = null
         lateinit var link : String
         var reg = Regex("\\s")
+        parser.require(XmlPullParser.START_TAG, ns,"item")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
                 continue
@@ -92,7 +93,7 @@ object NewsXmlParser {
 
 
 
-    // <title>여권 “채널A-검찰 유착 의혹에 윤석열 총장 입장 밝혀라” - 미디어오늘</title>
+    // <title> 제목 </title>
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readTitle(parser : XmlPullParser) : String {
         parser.require(XmlPullParser.START_TAG, null, "title")
@@ -111,13 +112,15 @@ object NewsXmlParser {
         return link
     }
 
-    // <meta name ="og:image" content="">
-    // <meta name ="og:description" content="">
+    // <meta property ="og:image" content="">
+    // <meta property ="og:description" content="">
+    // <meta name ="description" content="">
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readOther(link : String) : HashMap<String, String> {
         return MetaTagsParser.parseMetaTags(link)
     }
 
+    // <태그> 텍스트 </태그>
     @Throws(XmlPullParserException::class, IOException::class)
     private fun readText(parser : XmlPullParser) : String {
         var result = ""

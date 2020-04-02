@@ -18,7 +18,7 @@ import javax.net.ssl.X509TrustManager
  * title : item > title
  * image : item > link, <meta property="og:image"
  * keyword : item > link, <meta property="og:description"
- * Html Parser
+ * Html Parser, Xml parser를 통해 link를 얻어낸 다음 Html Parser를 통해 더 많은 정보를 얻어냄
  */
 
 object MetaTagsParser {
@@ -28,6 +28,7 @@ object MetaTagsParser {
         override fun checkServerTrusted(certs: Array<X509Certificate?>?, authType: String?) {}
     })
 
+    // meta property search, 만약 meta property에 description이 존재하지 않는다면, meta data search
     fun parseMetaTags(url : String) : HashMap<String,String> {
         val sc : SSLContext = SSLContext.getInstance("SSL")
         val resultMap : HashMap<String,String> = HashMap()

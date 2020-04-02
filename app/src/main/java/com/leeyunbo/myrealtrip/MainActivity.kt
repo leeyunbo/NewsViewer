@@ -17,23 +17,18 @@ import kotlinx.coroutines.*
  */
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit var viewModel : MainViewModel
-    lateinit var binding : ActivityMainBinding
+    lateinit var mViewModel : MainViewModel
+    lateinit var mBinding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+        mBinding = DataBindingUtil.setContentView(this,R.layout.activity_main)
+
         setRefreshLayout()
-        viewModel = MainViewModel()
-        CoroutineScope(Dispatchers.Main).launch {
-            main_activity_rf.isRefreshing = true
-            CoroutineScope(Dispatchers.IO).async {
-                showNewsList(viewModel)
-            }.await()
-            main_activity_rf.isRefreshing = false
-        }
-        binding.apply {
-            vm = viewModel
+        mViewModel = MainViewModel()
+        showNewsList(mViewModel)
+        mBinding.apply {
+            vm = mViewModel
         }
         initRecyclerView()
 
@@ -42,7 +37,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     override fun onRefresh() {
         CoroutineScope(Dispatchers.Main).launch {
             CoroutineScope(Dispatchers.IO).async {
-                showNewsList(viewModel)
+                showNewsList(mViewModel)
             }.await()
             main_activity_rf.isRefreshing = false
         }
@@ -68,7 +63,13 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
      * viewModel에게 데이터 최신화를 요청하는 메서드
      */
     fun showNewsList(viewModel : MainViewModel){
-        viewModel.doAction()
+        CoroutineScope(Dispatchers.Main).launch {
+            main_activity_rf.isRefreshing = true
+            CoroutineScope(Dispatchers.IO).async {
+                viewModel.doAction()
+            }.await()
+            main_activity_rf.isRefreshing = false
+        }
     }
 
 

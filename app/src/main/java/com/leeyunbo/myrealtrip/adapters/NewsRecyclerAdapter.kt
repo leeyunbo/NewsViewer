@@ -12,6 +12,7 @@ import com.leeyunbo.myrealtrip.util.RecyclerDiffCallback
 
 /*
  * News RecyclerView를 위한 어댑터 구현
+ * 만약 뉴스 데이터들을 다시 불러와 ViewModel 데이터가 최신화 된다면, data binding을 통해서 items도 최신화됨
  */
 
 class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
@@ -38,13 +39,13 @@ class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
     }
 }
 
-class BindingViewHolder(private val binding : NewsItemBinding) : RecyclerView.ViewHolder(binding.root){
+class BindingViewHolder(private val mBinding : NewsItemBinding) : RecyclerView.ViewHolder(mBinding.root){
     fun bind(items : News?) {
-        binding.apply {
+        mBinding.apply {
             news = items
         }
 
-        binding.root.setOnClickListener { view ->
+        mBinding.root.setOnClickListener { view ->
             val detailIntent = Intent(view.context, DetailActivity::class.java)
             detailIntent.putExtra("news",items)
             view.context.startActivity(detailIntent)
