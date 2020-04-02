@@ -46,7 +46,7 @@ fun bindKeyword(view : TextView, keywords : ArrayList<String>, position : Int) {
         return
     }
 
-    view.text = keywords.get(position-1)
+    view.text = keywords[position-1]
 }
 
 @BindingAdapter("bind_url")

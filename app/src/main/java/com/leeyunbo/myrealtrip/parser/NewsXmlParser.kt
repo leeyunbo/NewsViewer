@@ -55,7 +55,11 @@ object NewsXmlParser {
         var imageUrl: String? = null
         var keywords: ArrayList<String>? = null
         lateinit var link : String
-        var reg = Regex("\\s")
+        var reg = Regex("[^\\uAC00-\\uD7A3xfe0-9a-zA-Z\\s]")
+        var regSpace = Regex("\\s{2,}")
+        var regSpaceConfirm = Regex("\\s\\s+")
+        var regSpaceAll = Regex("\\p{Z}")
+        var regSpaceDel = Regex("(^\\p{Z}+|\\p{Z}+$)")
         parser.require(XmlPullParser.START_TAG, ns,"item")
         while (parser.next() != XmlPullParser.END_TAG) {
             if (parser.eventType != XmlPullParser.START_TAG) {
@@ -67,8 +71,12 @@ object NewsXmlParser {
                     link = readLink(parser)
                     val map = readOther(link)
                     description = map.get("description")?.apply {
-                        this.replace(reg," ")
-                        this.trim()
+                        trim()
+                        replace(reg," ")
+                        replace(regSpace,"")
+                        replace(regSpaceConfirm,"")
+                        replace(regSpaceAll,"")
+                        replace(regSpaceDel,"")
                     }
                     imageUrl = map.get("image")
 
@@ -82,7 +90,6 @@ object NewsXmlParser {
                 }
             }
         }
-        System.out.println("keywords : ${keywords.toString()}, link : ${link}")
         return News(title, description, keywords, imageUrl,link)
     }
 

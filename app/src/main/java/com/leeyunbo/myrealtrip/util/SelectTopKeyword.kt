@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
  */
 object SelectTopKeyword {
     fun getTopKeywords(description : String) : ArrayList<String>? {
-        val st = StringTokenizer(description,"`“”’‘<>!@#$%^&*(),./?~:;][=-…\'\"\t◆·\n ")
+        val st = StringTokenizer(description," \uD83D\uDC4D\uD83C\uDFFB∼`“”’‘<>!@#$%^&*(),./?~:;][=-…\'\"\t◆·\n ")
         val wordList : List<String> = st.toList() as List<String>
         val pairList : List<Pair<String,Int>> = wordList
             .filter { it.length >= 2 }

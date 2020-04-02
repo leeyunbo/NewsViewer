@@ -21,6 +21,7 @@ class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
         holder.bind(items.get(position))
+        System.out.println(items.get(position).keywords?.size)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {

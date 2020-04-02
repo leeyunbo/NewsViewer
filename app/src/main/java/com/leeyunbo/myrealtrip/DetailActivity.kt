@@ -14,7 +14,7 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this,R.layout.activity_detail)
         mBinding.apply {
-            news = intent.getParcelableExtra("news")
+            items = intent.getParcelableExtra("news")
         }
     }
 }
