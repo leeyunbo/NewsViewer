@@ -24,7 +24,7 @@ class MainModel {
     private fun downloadUrl() : InputStream? {
         val url = URL(urlString)
         return (url.openConnection() as? HttpURLConnection)?.run {
-               readTimeout = 17500
+               readTimeout = 20000
                connectTimeout = 15000
                requestMethod = "GET"
                doInput = true

@@ -42,7 +42,6 @@ object NewsXmlParser {
                 if (parser.name == "item") {
                     newsList.add(readItem(parser))
                 }
-
             }
         return newsList
     }
@@ -92,8 +91,6 @@ object NewsXmlParser {
         }
         return News(title, description, keywords, imageUrl,link)
     }
-
-
 
     // <title> 제목 </title>
     @Throws(XmlPullParserException::class, IOException::class)

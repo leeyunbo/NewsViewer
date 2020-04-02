@@ -25,6 +25,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         setRefreshLayout()
         viewModel = MainViewModel()
+
         CoroutineScope(Dispatchers.Main).launch {
             main_activity_rf.isRefreshing = true
             CoroutineScope(Dispatchers.IO).async {
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
             }.await()
             main_activity_rf.isRefreshing = false
         }
+
         binding.apply {
             vm = viewModel
         }

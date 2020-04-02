@@ -43,11 +43,9 @@ object MetaTagsParser {
                 var property = element.attr("property")
                 when {
                     property == "og:image" -> {
-                        resultMap.put("image",element.attr("content"))
-                    }
+                        resultMap.put("image",element.attr("content")) }
                     property == "og:description" -> {
-                        resultMap.put("description", element.attr("content"))
-                    }
+                        resultMap.put("description", element.attr("content")) }
                 }
             }
 
@@ -56,8 +54,7 @@ object MetaTagsParser {
                     var name = element.attr("name")
                     when {
                         name == "description" -> {
-                            resultMap.put("description", element.attr("content"))
-                        }
+                            resultMap.put("description", element.attr("content")) }
                     }
                 }
             }
