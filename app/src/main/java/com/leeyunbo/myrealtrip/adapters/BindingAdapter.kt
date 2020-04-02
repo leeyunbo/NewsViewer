@@ -36,11 +36,6 @@ fun bindImage(view : ImageView, imageUrl : String?) {
 
 @BindingAdapter("bind_keyword","keyword_position")
 fun bindKeyword(view : TextView, keywords : ArrayList<String>, position : Int) {
-    if(keywords == null) {
-        view.visibility= View.INVISIBLE
-        return
-    }
-
     if(keywords.size < position) {
         view.visibility = View.INVISIBLE
         return
@@ -51,20 +46,18 @@ fun bindKeyword(view : TextView, keywords : ArrayList<String>, position : Int) {
 
 @BindingAdapter("bind_url")
 fun bindUrl(view : WebView, url : String) {
-    if(url != null) {
-        view.settings.apply {
-            javaScriptEnabled = true
-            javaScriptCanOpenWindowsAutomatically = false
-            loadWithOverviewMode = true
-            useWideViewPort = true
-            builtInZoomControls = false
-            layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
-            cacheMode = WebSettings.LOAD_NO_CACHE
-            domStorageEnabled = true
-            setSupportZoom(false)
-            setSupportMultipleWindows(true)
-        }
+    view.settings.apply {
+        javaScriptEnabled = true
+        javaScriptCanOpenWindowsAutomatically = false
+        loadWithOverviewMode = true
+        useWideViewPort = true
+        builtInZoomControls = false
+        layoutAlgorithm = WebSettings.LayoutAlgorithm.TEXT_AUTOSIZING
+        cacheMode = WebSettings.LOAD_NO_CACHE
+        domStorageEnabled = true
+        setSupportZoom(false)
+        setSupportMultipleWindows(true)
+    }
         view.webViewClient = NewsWebViewClient()
         view.loadUrl(url)
-    }
 }

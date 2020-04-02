@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
     }
 
     fun initRecyclerView() {
-        main_activity_rv.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
+        main_activity_rv.layoutManager = LinearLayoutManager(this)
         main_activity_rv.setHasFixedSize(true)
         main_activity_rv.adapter = NewsDataAdapter()
     }

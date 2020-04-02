@@ -31,7 +31,7 @@ class RecyclerDiffCallback(private var oldItems : ArrayList<News>,
         if(!oldItem.description.equals(newItem.description)) return false
         if(oldItem.keywords?.size == newItem.keywords?.size) {
             var cnt : Int = 0
-            for(itemIdx in 0..oldItem.keywords!!.size) {
+            for(itemIdx in 0..oldItem.keywords!!.size-1) {
                 if(oldItem.keywords!!.get(itemIdx).equals(newItem.keywords!!.get(itemIdx))) {
                     cnt++
                 }
