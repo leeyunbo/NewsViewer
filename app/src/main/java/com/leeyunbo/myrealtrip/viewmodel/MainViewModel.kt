@@ -4,6 +4,9 @@ import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.ViewModel
 import com.leeyunbo.myrealtrip.data.MainModel
 import com.leeyunbo.myrealtrip.data.News
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.*
+
 /*
  * Recyclerview에 담을 데이터 리스트를 가지고 있는 ViewModel
  * MainView에서 요청이 들어오면 MainModel에게 데이터 가져올 것을 요청
@@ -11,15 +14,21 @@ import com.leeyunbo.myrealtrip.data.News
  */
 class MainViewModel : ViewModel() {
     var items : ObservableArrayList<News> = ObservableArrayList()
+    lateinit var job : Job
 
     val model : MainModel by lazy {
         MainModel()
     }
 
-    fun doAction() {
-        model.loadNewsData().let {
-            items.clear()
-            items.addAll(it)
+    suspend fun doAction() {
+        job = CoroutineScope(Dispatchers.Main).launch {
+            CoroutineScope(Dispatchers.IO).async {
+                model.loadNewsData().let {
+                    items.clear()
+                    items.addAll(it)
+                }
+            }
         }
+        job.join()
     }
 }

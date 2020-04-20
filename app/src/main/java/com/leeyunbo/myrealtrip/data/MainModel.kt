@@ -12,24 +12,7 @@ import java.net.URL
  */
 
 class MainModel {
-    val urlString = "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko"
-    lateinit var result : ObservableArrayList<News>
-    fun loadNewsData() : ObservableArrayList<News> {
-        result = downloadUrl()?.use {
-            NewsXmlParser.parse(it)
-        } ?: ObservableArrayList()
-        return result
-    }
-
-    private fun downloadUrl() : InputStream? {
-        val url = URL(urlString)
-        return (url.openConnection() as? HttpURLConnection)?.run {
-               readTimeout = 25000
-               connectTimeout = 15000
-               requestMethod = "GET"
-               doInput = true
-               connect()
-               inputStream
-        }
+    fun loadNewsData() : ArrayList<News> {
+        return NewsXmlParser.parse()
     }
 }

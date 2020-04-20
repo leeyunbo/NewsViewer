@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.leeyunbo.myrealtrip.adapters.NewsDataAdapter
 import com.leeyunbo.myrealtrip.databinding.ActivityMainBinding
@@ -17,32 +16,32 @@ import kotlinx.coroutines.*
  */
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
-    lateinit var viewModel : MainViewModel
-    lateinit var binding : ActivityMainBinding
+    private lateinit var viewModel : MainViewModel
+    private lateinit var binding : ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this,R.layout.activity_main)
         setRefreshLayout()
         viewModel = MainViewModel()
-
-        CoroutineScope(Dispatchers.Main).launch {
-            main_activity_rf.isRefreshing = true
-            CoroutineScope(Dispatchers.IO).async {
-                showNewsList(viewModel)
-            }.await()
-            main_activity_rf.isRefreshing = false
-        }
-
         binding.apply {
             vm = viewModel
         }
-        initRecyclerView()
 
+        main_activity_rf.isRefreshing = true
+        showNewsList(viewModel)
+        main_activity_rf.isRefreshing = false
+        initRecyclerView()
+    }
+
+
+    override fun onDestroy() {
+        viewModel.job.cancel()
+        super.onDestroy()
     }
 
     override fun onRefresh() {
-        CoroutineScope(Dispatchers.Main).launch {
+        val job = CoroutineScope(Dispatchers.Main).launch {
             CoroutineScope(Dispatchers.IO).async {
                 showNewsList(viewModel)
             }.await()

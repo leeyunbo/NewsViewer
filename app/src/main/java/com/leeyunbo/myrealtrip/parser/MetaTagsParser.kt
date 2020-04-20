@@ -22,14 +22,14 @@ import javax.net.ssl.X509TrustManager
  */
 
 object MetaTagsParser {
-    var trustAllCerts: Array<TrustManager> = arrayOf(object : X509TrustManager {
+    private var trustAllCerts: Array<TrustManager> = arrayOf(object : X509TrustManager {
         override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
         override fun checkClientTrusted(certs: Array<X509Certificate?>?, authType: String?) {}
         override fun checkServerTrusted(certs: Array<X509Certificate?>?, authType: String?) {}
     })
 
     // meta property search, 만약 meta property에 description이 존재하지 않는다면, meta data search
-    fun parseMetaTags(url : String) : HashMap<String,String> {
+    fun parseMetaTags(url: String) : HashMap<String,String> {
         val sc : SSLContext = SSLContext.getInstance("SSL")
         val resultMap : HashMap<String,String> = HashMap()
         sc.init(null, trustAllCerts, SecureRandom())

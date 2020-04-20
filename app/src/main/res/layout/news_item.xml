@@ -33,10 +33,9 @@
             <TextView
                     android:id="@+id/item_title_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
+                    android:layout_height="25dp"
                     android:text="@{news.title}"
-                    android:textSize="15dp"
+                    android:textSize="20dp"
                     android:textStyle="bold"
                     android:maxLines="1"
                     app:layout_constraintTop_toTopOf="@+id/item_img"
@@ -44,16 +43,15 @@
             <TextView
                     android:id="@+id/item_content_tv"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_height="50dp"
                     android:layout_marginTop="5dp"
-                    android:layout_weight="2"
                     android:text="@{news.description}"
                     android:textSize="12dp"
                     android:maxLines="2"
                     app:layout_constraintLeft_toLeftOf="@+id/item_title_tv"
                     app:layout_constraintTop_toBottomOf="@+id/item_title_tv"/>
             <LinearLayout android:layout_width="match_parent"
-                          android:layout_height="0dp"
+                          android:layout_height="20dp"
                           android:layout_marginTop="5dp"
                           android:layout_weight="1"
                           android:orientation="horizontal">

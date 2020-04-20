@@ -8,6 +8,8 @@ import org.xmlpull.v1.XmlPullParser
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
 import java.io.InputStream
+import java.net.HttpURLConnection
+import java.net.URL
 
 /*
  * title : item > title
@@ -18,15 +20,32 @@ import java.io.InputStream
  */
 
 object NewsXmlParser {
+    private val url = "https://news.google.com/rss?hl=ko&gl=KR&ceid=KR:ko"
     private val ns : String? = null
+    private var inputStream: InputStream? = null
+
     @Throws(XmlPullParserException::class, IOException::class)
-     fun parse(inputStream: InputStream) : ObservableArrayList<News> {
+     fun parse() : ObservableArrayList<News> {
+        inputStream = downloadUrl()
         inputStream.use {
             val parser: XmlPullParser = Xml.newPullParser()
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false)
             parser.setInput(it, null)
             parser.nextTag()
             return readNews(parser)
+        }
+    }
+
+    @Throws(IOException::class)
+    private fun downloadUrl() : InputStream? {
+        val url = URL(url)
+        return (url.openConnection() as? HttpURLConnection)?.run {
+            readTimeout = 25000
+            connectTimeout = 15000
+            requestMethod = "GET"
+            doInput = true
+            connect()
+            inputStream
         }
     }
 

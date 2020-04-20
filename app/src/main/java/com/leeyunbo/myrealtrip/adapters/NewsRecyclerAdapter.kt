@@ -3,6 +3,7 @@ package com.leeyunbo.myrealtrip.adapters
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.leeyunbo.myrealtrip.DetailActivity
@@ -20,7 +21,7 @@ class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
     override fun getItemCount() = items.size
 
     override fun onBindViewHolder(holder: BindingViewHolder, position: Int) {
-        holder.bind(items.get(position))
+        holder.bind(items[position])
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingViewHolder {
@@ -28,17 +29,15 @@ class NewsDataAdapter : RecyclerView.Adapter<BindingViewHolder>() {
     }
 
     fun updateItems(_items : ArrayList<News>) {
-        val callback = RecyclerDiffCallback(this.items, _items)
-        val result : DiffUtil.DiffResult = DiffUtil.calculateDiff(callback)
-
         this.items.clear()
         this.items.addAll(_items)
-        result.dispatchUpdatesTo(this)
+        notifyDataSetChanged()
     }
 }
 
 class BindingViewHolder(private val mBinding : NewsItemBinding) : RecyclerView.ViewHolder(mBinding.root){
     fun bind(items : News?) {
+        println("item.keywords : ${items?.keywords.toString()}")
         mBinding.apply {
             news = items
         }

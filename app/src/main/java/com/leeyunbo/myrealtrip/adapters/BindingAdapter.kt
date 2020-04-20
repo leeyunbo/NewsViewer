@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide
 import com.leeyunbo.myrealtrip.R
 import com.leeyunbo.myrealtrip.data.News
 import com.leeyunbo.myrealtrip.util.NewsWebViewClient
+import java.lang.IndexOutOfBoundsException
+
 /*
  * Data Binding Adapter
  */
@@ -36,12 +38,11 @@ fun bindImage(view : ImageView, imageUrl : String?) {
 
 @BindingAdapter("bind_keyword","keyword_position")
 fun bindKeyword(view : TextView, keywords : ArrayList<String>, position : Int) {
-    if(keywords.size < position) {
+    try {
+        view.text = keywords[position-1]
+    } catch(e: IndexOutOfBoundsException) {
         view.visibility = View.INVISIBLE
-        return
     }
-
-    view.text = keywords[position-1]
 }
 
 @BindingAdapter("bind_url")
