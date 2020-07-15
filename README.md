@@ -23,3 +23,8 @@
 5. Model에 인터넷 접근하는 코드 위치 변경
 6. 뷰모델에서 비즈니스 로직 수행
 ```
+
+### 어플리케이션 화면 
+
+![image](https://user-images.githubusercontent.com/44944031/87563909-ba6c3a00-c6fa-11ea-821c-abe0cf587da8.png)
+
